@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毛孩保健食品評估問卷</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+:root{
+  --bg: #1f2e22;
+  --bg2: #16201a;
+  --paper: #fbf7ee;
+  --ink: #20241c;
+  --ink-soft: #5a5f52;
+  --accent: #e8a33d;
+  --accent-deep: #c97f1f;
+  --clay: #c1654b;
+  --sage: #7c9473;
+  --line: rgba(32,36,28,0.14);
+  --joint: #c1654b;
+  --gut: #7c9473;
+  --skin: #e8a33d;
+  --weight: #6c8aa3;
+  --overall: #9a7bc4;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family: 'Noto Sans TC', sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(232,163,61,0.10), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(124,148,115,0.14), transparent 50%),
+    var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 32px 16px 60px;
+}
+
+.wrap{ max-width: 760px; margin: 0 auto; }
+
+.masthead{
+  text-align:center;
+  color: var(--paper);
+  margin-bottom: 28px;
+}
+.masthead .eyebrow{
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.masthead h1{
+  font-family:'Fraunces', serif;
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.2;
+}
+.masthead p{
+  margin-top: 10px;
+  color: rgba(251,247,238,0.72);
+  font-size: 14.5px;
+}
+
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.tab-btn{
+  border:1px solid rgba(251,247,238,0.25);
+  background: rgba(251,247,238,0.06);
+  color: rgba(251,247,238,0.8);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  cursor:pointer;
+  transition: all .2s ease;
+  font-family:'Noto Sans TC', sans-serif;
+}
+.tab-btn.active{
+  background: var(--accent);
+  color: #2a1c05;
+  border-color: var(--accent);
+  font-weight:700;
+}
+
+.card{
+  background: var(--paper);
+  border-radius: 22px;
+  padding: 32px clamp(20px,5vw,44px) 36px;
+  box-shadow: 0 30px 60px -25px rgba(0,0,0,0.55);
+}
+
+.step-indicator{
+  display:flex; gap:6px; margin-bottom: 26px;
+}
+.step-indicator span{
+  flex:1; height:4px; border-radius:3px; background: var(--line);
+}
+.step-indicator span.done{ background: var(--accent); }
+
+.step-title{
+  font-family:'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.step-sub{
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  margin-bottom: 22px;
+}
+
+.field{ margin-bottom: 20px; }
+.field label.q{
+  display:block;
+  font-weight:700;
+  font-size: 14.5px;
+  margin-bottom: 10px;
+}
+.opt-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
+  gap: 8px;
+}
+.opt{
+  border:1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+  cursor:pointer;
+  text-align:center;
+  transition: all .15s ease;
+  user-select:none;
+  background: #fff;
+}
+.opt:hover{ border-color: var(--accent); }
+.opt.sel{
+  border-color: var(--accent-deep);
+  background: #fdf1dd;
+  font-weight:700;
+  color:#7a4d0d;
+}
+
+textarea{
+  width:100%;
+  border:1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  font-family:'Noto Sans TC',sans-serif;
+  font-size: 13.5px;
+  resize:vertical;
+  min-height: 70px;
+}
+textarea:focus, .opt:focus-visible{ outline: 2px solid var(--accent); outline-offset:1px; }
+
+.nav-row{
+  display:flex; justify-content:space-between; margin-top: 26px;
+  gap: 10px;
+}
+button.btn{
+  font-family:'Noto Sans TC',sans-serif;
+  border:none; cursor:pointer;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.btn-primary{ background: var(--ink); color: var(--paper); }
+.btn-primary:hover{ background:#3a4030; }
+.btn-ghost{ background: transparent; color: var(--ink-soft); border:1.5px solid var(--line); }
+.btn-ghost:hover{ border-color: var(--ink-soft); }
+.btn-primary:disabled{ opacity:.4; cursor:not-allowed; }
+
+/* ---- results ---- */
+.result-head{ text-align:center; margin-bottom: 18px; }
+.result-head h2{ font-family:'Fraunces',serif; font-size: 24px; }
+.result-head p{ color: var(--ink-soft); font-size: 13.5px; margin-top:4px; }
+
+.radar-wrap{ display:flex; justify-content:center; margin: 18px 0 8px; }
+
+.rec-list{ display:flex; flex-direction:column; gap: 14px; margin-top: 18px; }
+.rec-card{
+  border:1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: #fff;
+}
+.rec-card .rank{
+  font-size: 11px; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--accent-deep); font-weight:800; margin-bottom: 4px;
+}
+.rec-card h3{ font-family:'Fraunces',serif; font-size: 18px; margin-bottom: 6px; }
+.bar-bg{ height:7px; border-radius:5px; background:var(--line); overflow:hidden; margin-bottom:10px; }
+.bar-fill{ height:100%; border-radius:5px; }
+.tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+.tag{
+  font-size:12px; background:#f2efe6; border-radius:999px; padding:4px 10px; color:#4a4d40;
+}
+.rec-card .why{ font-size: 13px; color: var(--ink-soft); line-height:1.6; }
+
+.disclaimer{
+  margin-top: 22px; font-size: 12px; color: var(--ink-soft);
+  border-top:1px dashed var(--line); padding-top:14px; line-height:1.6;
+}
+
+.restart{ text-align:center; margin-top:20px; }
+
+/* ---- stats tab ---- */
+.stat-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
+.stat-box{ background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:14px 16px; text-align:center; }
+.stat-box .num{ font-family:'Fraunces',serif; font-size: 28px; font-weight:700; color: var(--accent-deep); }
+.stat-box .lbl{ font-size:12px; color:var(--ink-soft); margin-top:2px; }
+
+.dist-row{ margin-bottom: 14px; }
+.dist-row .dist-label{ display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; font-weight:600; }
+.dist-bar-bg{ height:10px; border-radius:6px; background:var(--line); overflow:hidden; }
+.dist-bar-fill{ height:100%; border-radius:6px; background: var(--sage); }
+
+.empty-state{ text-align:center; padding: 40px 10px; color: var(--ink-soft); }
+.empty-state .paw{ font-size:34px; margin-bottom:10px; }
+
+.loading-note{ text-align:center; color: var(--ink-soft); font-size:13px; padding: 20px; }
+
+.section-title{ font-family:'Fraunces',serif; font-size:18px; margin: 22px 0 10px; }
+.note-shared{ font-size:11.5px; color: var(--ink-soft); background:#f2efe6; padding:8px 12px; border-radius:10px; margin-bottom:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="eyebrow">Pet Wellness Intake</div>
+    <h1>毛孩保健食品評估問卷</h1>
+    <p>回答幾個關於毛孩的小問題，立即得到客製化保健建議</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabSurveyBtn" onclick="switchTab('survey')">📋 填寫問卷</button>
+    <button class="tab-btn" id="tabStatsBtn" onclick="switchTab('stats')">📊 統計分析</button>
+  </div>
+
+  <div class="card" id="surveyCard"></div>
+  <div class="card" id="statsCard" style="display:none;"></div>
+</div>
+
+<script>
+/* ============ data model ============ */
+const STEPS = [
+  {
+    title: "基本資料",
+    sub: "先認識一下你的毛孩",
+    fields: [
+      { key:'species', q:'毛孩是？', type:'single', opts:[['dog','🐶 狗狗'],['cat','🐱 貓咪']] },
+      { key:'age', q:'年齡階段', type:'single', opts:[['puppy','未滿1歲'],['adult','1–6歲'],['mature7','7–9歲'],['senior10','10歲以上']] },
+      { key:'size', q:'體型（貓咪請選小型）', type:'single', opts:[['small','小型 / 貓咪'],['medium','中型'],['large','大型 / 巨型']] },
+    ]
+  },
+  {
+    title: "生活與體態",
+    sub: "了解日常作息與身形狀況",
+    fields: [
+      { key:'weight', q:'目前體態', type:'single', opts:[['under','偏瘦'],['normal','標準'],['over','偏重 / 肥胖']] },
+      { key:'activity', q:'活動量', type:'single', opts:[['low','低（少動、室內為主）'],['mid','中等'],['high','高（運動量大）']] },
+      { key:'diet', q:'主要飲食型態', type:'single', opts:[['commercial','商業飼料/罐頭'],['fresh','鮮食/自製'],['mixed','混合飲食']] },
+      { key:'neutered', q:'是否已絕育', type:'single', opts:[['yes','已絕育'],['no','未絕育']] },
+    ]
+  },
+  {
+    title: "健康狀況觀察",
+    sub: "最近是否有以下情形？（可複選）",
+    fields: [
+      { key:'symptoms', q:'觀察到的狀況', type:'multi', opts:[
+          ['joint','起身遲緩 / 跛行 / 不愛上下樓梯'],
+          ['gut','軟便 / 嘔吐 / 脹氣 / 排便不順'],
+          ['skin','皮膚癢 / 掉毛多 / 毛髮無光澤'],
+          ['oral','口臭 / 牙結石'],
+          ['appetite','食慾不振'],
+          ['none','目前都沒有特別狀況'],
+        ]}
+    ]
+  },
+  {
+    title: "補充說明",
+    sub: "（選填）任何特殊狀況都可以告訴我們，例如已確診的疾病、過敏原等",
+    fields: [
+      { key:'notes', q:'特殊狀況備註', type:'text' }
+    ]
+  }
+];
+
+let current = 0;
+let answers = { symptoms: [] };
+
+/* ============ render survey ============ */
+function renderSurvey(){
+  const el = document.getElementById('surveyCard');
+  if(current >= STEPS.length){ renderResults(); return; }
+  const step = STEPS[current];
+
+  let html = `<div class="step-indicator">`;
+  STEPS.forEach((s,i)=> html += `<span class="${i<=current?'done':''}"></span>`);
+  html += `</div>`;
+  html += `<div class="step-title">${step.title}</div><div class="step-sub">${step.sub}</div>`;
+
+  step.fields.forEach(f=>{
+    html += `<div class="field"><label class="q">${f.q}</label>`;
+    if(f.type === 'text'){
+      html += `<textarea id="f_${f.key}" placeholder="例如：已確診膝關節炎、對雞肉過敏…">${answers[f.key]||''}</textarea>`;
+    } else {
+      html += `<div class="opt-grid">`;
+      f.opts.forEach(([val,label])=>{
+        const isSel = f.type==='multi' ? (answers[f.key]||[]).includes(val) : answers[f.key]===val;
+        html += `<div class="opt ${isSel?'sel':''}" tabindex="0" onclick="selectOpt('${f.key}','${val}','${f.type}')" onkeydown="if(event.key==='Enter')selectOpt('${f.key}','${val}','${f.type}')">${label}</div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div class="nav-row">
+    <button class="btn btn-ghost" onclick="prevStep()" ${current===0?'disabled':''}>上一步</button>
+    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">${current===STEPS.length-1?'看結果 →':'下一步'}</button>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+function selectOpt(key, val, type){
+  if(type==='multi'){
+    if(!answers[key]) answers[key]=[];
+    if(val==='none'){
+      answers[key] = answers[key].includes('none') ? [] : ['none'];
+    } else {
+      answers[key] = answers[key].filter(v=>v!=='none');
+      const idx = answers[key].indexOf(val);
+      if(idx>-1) answers[key].splice(idx,1); else answers[key].push(val);
+    }
+  } else {
+    answers[key] = val;
+  }
+  renderSurvey();
+}
+
+function currentStepValid(){
+  const step = STEPS[current];
+  for(const f of step.fields){
+    if(f.type==='text') continue;
+    if(f.type==='multi'){ if(!answers[f.key] || answers[f.key].length===0) return false; }
+    else { if(!answers[f.key]) return false; }
+  }
+  return true;
+}
+
+function nextStep(){
+  if(!currentStepValid()){
+    alert('請完成這一頁的必填問題再繼續喔');
+    return;
+  }
+  const notesEl = document.getElementById('f_notes');
+  if(notesEl) answers.notes = notesEl.value;
+  current++;
+  renderSurvey();
+}
+function prevStep(){
+  const notesEl = document.getElementById('f_notes');
+  if(notesEl) answers.notes = notesEl.value;
+  current--;
+  renderSurvey();
+}
+
+/* ============ scoring engine ============ */
+const CATS = {
+  joint:   { label:'關節骨骼', color:'var(--joint)',
+             ingredients:['葡萄糖胺 + 軟骨素','UC-II 未變性二型膠原蛋白','Omega-3 (EPA/DHA) 魚油','MSM 甲基硫醯基甲烷'] },
+  gut:     { label:'腸胃消化', color:'var(--gut)',
+             ingredients:['益生菌 + 益生質','消化酵素','南瓜粉 / 車前子纖維','腸黏膜修復成分（如麩醯胺酸）'] },
+  skin:    { label:'皮膚毛髮', color:'var(--skin)',
+             ingredients:['Omega-3 / Omega-6 脂肪酸','生物素 Biotin','鋅','膠原蛋白 + 維生素E'] },
+  weight:  { label:'體重代謝', color:'var(--weight)',
+             ingredients:['左旋肉鹼 L-Carnitine','高纖配方','綠茶多酚','關節保護成分（體重負擔考量）'] },
+  overall: { label:'整體保健 / 長壽', color:'var(--overall)',
+             ingredients:['綜合維生素 + 礦物質','抗氧化劑（維生素C/E）','SAM-e 護肝成分','益生菌（口腔/全身保健）'] },
+};
+
+function computeScores(a){
+  let s = { joint:0, gut:0, skin:0, weight:0, overall:8 };
+
+  if(a.age==='senior10'){ s.joint+=28; s.overall+=22; }
+  else if(a.age==='mature7'){ s.joint+=14; s.overall+=12; }
+  else if(a.age==='adult'){ s.overall+=4; }
+  else if(a.age==='puppy'){ s.overall+=4; }
+
+  if(a.size==='large') s.joint+=22;
+  else if(a.size==='medium') s.joint+=10;
+
+  if(a.weight==='over'){ s.weight+=34; s.joint+=12; }
+  else if(a.weight==='under'){ s.weight+=14; s.overall+=6; }
+
+  if(a.activity==='high') s.joint+=10;
+  if(a.activity==='low') s.weight+=10;
+
+  if(a.diet==='commercial') s.gut+=6;
+  if(a.diet==='fresh') s.gut+=4;
+
+  (a.symptoms||[]).forEach(sym=>{
+    if(sym==='joint') s.joint+=36;
+    if(sym==='gut') s.gut+=36;
+    if(sym==='skin') s.skin+=36;
+    if(sym==='oral') s.overall+=16;
+    if(sym==='appetite'){ s.gut+=14; s.overall+=10; }
+  });
+
+  Object.keys(s).forEach(k=> s[k] = Math.max(0, Math.min(100, Math.round(s[k]))) );
+  return s;
+}
+
+function topRecommendations(scores){
+  const arr = Object.entries(scores).map(([k,v])=>({key:k, score:v, ...CATS[k]}));
+  arr.sort((a,b)=> b.score - a.score);
+  return arr.slice(0,3);
+}
+
+function whyText(key, a){
+  const reasons = {
+    joint: [],
+    gut: [],
+    skin: [],
+    weight: [],
+    overall: []
+  };
+  if(a.age==='senior10' || a.age==='mature7') reasons.joint.push('年齡進入熟齡/高齡階段，關節耗損風險上升');
+  if(a.size==='large') reasons.joint.push('大型/巨型犬天生關節負擔較大');
+  if((a.symptoms||[]).includes('joint')) reasons.joint.push('觀察到起身遲緩或跛行等徵兆');
+  if(a.weight==='over') reasons.joint.push('體重偏重會加重關節壓力');
+
+  if((a.symptoms||[]).includes('gut')) reasons.gut.push('近期有軟便、嘔吐或脹氣等腸胃徵兆');
+  if((a.symptoms||[]).includes('appetite')) reasons.gut.push('食慾不振可能與腸胃功能有關');
+  if(a.diet==='commercial') reasons.gut.push('長期商業飼料可加強腸道菌相維持');
+
+  if((a.symptoms||[]).includes('skin')) reasons.skin.push('有皮膚癢、掉毛或毛髮無光澤的情形');
+
+  if(a.weight==='over') reasons.weight.push('目前體態偏重，建議搭配代謝管理');
+  if(a.activity==='low') reasons.weight.push('活動量較低，代謝相對容易趨緩');
+  if(a.weight==='under') reasons.weight.push('體態偏瘦，需留意整體營養吸收');
+
+  if(a.age==='senior10') reasons.overall.push('高齡毛孩適合全面性的抗氧化與保健支持');
+  if((a.symptoms||[]).includes('oral')) reasons.overall.push('口臭/牙結石提示口腔及全身保健需求');
+  if((a.symptoms||[]).includes('none')) reasons.overall.push('目前無特別症狀，建議以日常維持保健為主');
+
+  const list = reasons[key];
+  return list.length ? list.join('；') : '根據整體年齡、體型與生活型態的綜合評估';
+}
+
+/* ============ radar chart (signature element) ============ */
+function renderRadar(scores){
+  const order = ['joint','gut','skin','weight','overall'];
+  const cx=130, cy=130, R=95;
+  const n = order.length;
+  const angle = (i)=> (Math.PI*2*i/n) - Math.PI/2;
+
+  function pt(i, r){
+    const a = angle(i);
+    return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+  }
+
+  let gridRings = [0.25,0.5,0.75,1].map(f=>{
+    const pts = order.map((_,i)=> pt(i, R*f).join(',')).join(' ');
+    return `<polygon points="${pts}" fill="none" stroke="rgba(32,36,28,0.12)" stroke-width="1"/>`;
+  }).join('');
+
+  let axes = order.map((_,i)=>{
+    const [x,y] = pt(i,R);
+    return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(32,36,28,0.14)" stroke-width="1"/>`;
+  }).join('');
+
+  let dataPts = order.map((k,i)=> pt(i, R * (scores[k]/100)) );
+  let dataPoly = `<polygon points="${dataPts.map(p=>p.join(',')).join(' ')}" fill="rgba(232,163,61,0.30)" stroke="#c97f1f" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  let dots = dataPts.map(([x,y])=> `<circle cx="${x}" cy="${y}" r="3.5" fill="#c97f1f"/>`).join('');
+
+  let labels = order.map((k,i)=>{
+    const [x,y] = pt(i, R+24);
+    return `<text x="${x}" y="${y}" font-size="11" font-weight="700" fill="#3a3d32" text-anchor="middle" dominant-baseline="middle">${CATS[k].label}</text>`;
+  }).join('');
+
+  return `<svg width="280" height="280" viewBox="0 0 260 260">
+    <g>${gridRings}${axes}${dataPoly}${dots}${labels}</g>
+  </svg>`;
+}
+
+/* ============ results + save ============ */
+async function renderResults(){
+  const el = document.getElementById('surveyCard');
+  const scores = computeScores(answers);
+  const recs = topRecommendations(scores);
+
+  let html = `<div class="result-head">
+    <h2>${answers.species==='dog'?'🐶':'🐱'} 毛孩保健建議出爐了</h2>
+    <p>根據年齡、體型、生活型態與觀察症狀的綜合分析</p>
+  </div>
+  <div class="radar-wrap">${renderRadar(scores)}</div>
+  <div class="rec-list">`;
+
+  recs.forEach((r, i)=>{
+    html += `<div class="rec-card">
+      <div class="rank">推薦 ${i+1}</div>
+      <h3>${r.label}</h3>
+      <div class="bar-bg"><div class="bar-fill" style="width:${r.score}%; background:${r.color}"></div></div>
+      <div class="tag-row">${r.ingredients.map(ing=>`<span class="tag">${ing}</span>`).join('')}</div>
+      <div class="why">為什麼：${whyText(r.key, answers)}</div>
+    </div>`;
+  });
+
+  html += `</div>
+  <div class="disclaimer">⚠️ 以上建議由問卷回答自動生成，僅供保健方向參考，並非醫療診斷。毛孩如有明顯不適或慢性病史，請務必諮詢獸醫師後再選用保健食品。</div>
+  <div class="restart"><button class="btn btn-ghost" onclick="restart()">重新填寫一份</button></div>`;
+
+  el.innerHTML = html;
+
+  // save submission (shared so it feeds the stats tab)
+  try{
+    const id = 'sub_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+    await window.storage.set('pet-survey:'+id, JSON.stringify({ answers, scores, ts: Date.now() }), true);
+  }catch(e){
+    console.error('儲存失敗', e);
+  }
+}
+
+function restart(){
+  current = 0;
+  answers = { symptoms: [] };
+  renderSurvey();
+}
+
+/* ============ tabs ============ */
+function switchTab(tab){
+  document.getElementById('tabSurveyBtn').classList.toggle('active', tab==='survey');
+  document.getElementById('tabStatsBtn').classList.toggle('active', tab==='stats');
+  document.getElementById('surveyCard').style.display = tab==='survey' ? 'block':'none';
+  document.getElementById('statsCard').style.display = tab==='stats' ? 'block':'none';
+  if(tab==='stats') loadStats();
+}
+
+async function loadStats(){
+  const el = document.getElementById('statsCard');
+  el.innerHTML = `<div class="loading-note">📊 正在彙整大家的問卷資料…</div>`;
+
+  let keys = [];
+  try{
+    const res = await window.storage.list('pet-survey:', true);
+    keys = (res && res.keys) || [];
+  }catch(e){
+    el.innerHTML = `<div class="empty-state"><div class="paw">🐾</div>目前還沒有任何問卷資料</div>`;
+    return;
+  }
+
+  if(keys.length===0){
+    el.innerHTML = `<div class="empty-state"><div class="paw">🐾</div>目前還沒有任何問卷資料<br><span style="font-size:12px">填寫第一份問卷，成為統計的起點吧！</span></div>`;
+    return;
+  }
+
+  const records = [];
+  for(const k of keys){
+    try{
+      const r = await window.storage.get(k, true);
+      if(r && r.value) records.push(JSON.parse(r.value));
+    }catch(e){ /* skip broken record */ }
+  }
+
+  // aggregate
+  const total = records.length;
+  const speciesCount = { dog:0, cat:0 };
+  const symptomCount = {};
+  const catScoreSum = { joint:0, gut:0, skin:0, weight:0, overall:0 };
+  let topCatCount = { joint:0, gut:0, skin:0, weight:0, overall:0 };
+
+  records.forEach(rec=>{
+    const a = rec.answers || {};
+    if(a.species) speciesCount[a.species] = (speciesCount[a.species]||0)+1;
+    (a.symptoms||[]).forEach(s=>{ symptomCount[s] = (symptomCount[s]||0)+1; });
+    const sc = rec.scores || {};
+    Object.keys(catScoreSum).forEach(k=> catScoreSum[k] += (sc[k]||0));
+    const top = Object.entries(sc).sort((x,y)=>y[1]-x[1])[0];
+    if(top) topCatCount[top[0]] = (topCatCount[top[0]]||0)+1;
+  });
+
+  const symptomLabel = { joint:'關節異狀', gut:'腸胃異狀', skin:'皮膚異狀', oral:'口腔異狀', appetite:'食慾不振', none:'無特別症狀' };
+
+  let html = `<div class="note-shared">這個統計來自所有填寫過此問卷的使用者（共用資料）</div>`;
+  html += `<div class="stat-grid">
+    <div class="stat-box"><div class="num">${total}</div><div class="lbl">總填寫份數</div></div>
+    <div class="stat-box"><div class="num">${speciesCount.dog||0}</div><div class="lbl">🐶 狗狗</div></div>
+    <div class="stat-box"><div class="num">${speciesCount.cat||0}</div><div class="lbl">🐱 貓咪</div></div>
+  </div>`;
+
+  html += `<div class="section-title">最常被推薦的保健方向</div>`;
+  Object.entries(topCatCount).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{
+    const pct = total ? Math.round(v/total*100) : 0;
+    html += `<div class="dist-row">
+      <div class="dist-label"><span>${CATS[k].label}</span><span>${v} 份（${pct}%）</span></div>
+      <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:${pct}%; background:${CATS[k].color}"></div></div>
+    </div>`;
+  });
+
+  html += `<div class="section-title">常見觀察症狀</div>`;
+  const symEntries = Object.entries(symptomCount).sort((a,b)=>b[1]-a[1]);
+  if(symEntries.length===0){
+    html += `<div style="font-size:13px;color:var(--ink-soft);">尚無症狀資料</div>`;
+  } else {
+    symEntries.forEach(([k,v])=>{
+      const pct = total ? Math.round(v/total*100) : 0;
+      html += `<div class="dist-row">
+        <div class="dist-label"><span>${symptomLabel[k]||k}</span><span>${v} 份（${pct}%）</span></div>
+        <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:${pct}%; background:var(--accent)"></div></div>
+      </div>`;
+    });
+  }
+
+  html += `<div class="disclaimer">統計數據每次切換頁籤即時重新計算，僅反映目前已蒐集到的問卷樣本，不代表普遍獸醫學結論。</div>`;
+
+  el.innerHTML = html;
+}
+
+renderSurvey();
+</script>
+</body>
+</html>
